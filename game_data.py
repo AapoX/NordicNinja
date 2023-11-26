@@ -1,5 +1,6 @@
 level_0 = {
 		'terrain': 'levels/0/level_0_terrain.csv',
+		'terrain2': 'levels/0/level_0_terrain2.csv',
 		'coins':'levels/0/level_0_coins.csv',
 		'fg palms':'levels/0/level_0_fg_palms.csv',
 		'bg palms':'levels/0/level_0_bg_palms.csv',
@@ -13,6 +14,7 @@ level_0 = {
 		'node_graphics': 'graphics/overworld/0'}
 level_1 = {
 		'terrain': 'levels/1/level_1_terrain.csv',
+		'terrain2': 'levels/1/level_1_terrain2.csv',
 		'coins':'levels/1/level_1_coins.csv',
 		'fg palms':'levels/1/level_1_fg_palms.csv',
 		'bg palms':'levels/1/level_1_bg_palms.csv',
@@ -26,6 +28,7 @@ level_1 = {
 		'unlock': 2}
 level_2 = {
 		'terrain': 'levels/2/level_2_terrain.csv',
+		'terrain2': 'levels/2/level_2_terrain2.csv',
 		'coins':'levels/2/level_2_coins.csv',
 		'fg palms':'levels/2/level_2_fg_palms.csv',
 		'bg palms':'levels/2/level_2_bg_palms.csv',

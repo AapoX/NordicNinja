@@ -43,7 +43,9 @@ class Level:
 
 		# terrain setup
 		terrain_layout = import_csv_layout(level_data['terrain'])
-		self.terrain_sprites = self.create_tile_group(terrain_layout,'terrain')
+		terrain_layout2 = import_csv_layout(level_data['terrain2'])
+		self.terrain_sprites = self.create_tile_group(terrain_layout, 'terrain')
+		self.terrain_sprites2 = self.create_tile_group(terrain_layout2, 'terrain2')
 
 		# grass setup 
 		grass_layout = import_csv_layout(level_data['grass'])
@@ -106,6 +108,11 @@ class Level:
 						tile_surface = terrain_tile_list[int(val)]
 						sprite = StaticTile(tile_size,x,y,tile_surface)
 					
+					if type == 'terrain2':
+						terrain_tile_list2 = import_cut_graphics('graphics/terrain/terrain_snow.png')
+						tile_surface = terrain_tile_list2[int(val)]
+						sprite = StaticTile(tile_size,x,y,tile_surface)
+					
 					if type == 'grass':
 						grass_tile_list = import_cut_graphics('graphics/decoration/grass/grass.png')
 						tile_surface = grass_tile_list[int(val)]
@@ -164,7 +171,7 @@ class Level:
 	def horizontal_movement_collision(self):
 		player = self.player.sprite
 		player.collision_rect.x += player.direction.x * player.speed
-		collidable_sprites = self.terrain_sprites.sprites() + self.crate_sprites.sprites() + self.fg_palm_sprites.sprites()
+		collidable_sprites = self.terrain_sprites.sprites() + self.crate_sprites.sprites() + self.terrain_sprites2.sprites()
 		for sprite in collidable_sprites:
 			if sprite.rect.colliderect(player.collision_rect):
 				if player.direction.x < 0: 
@@ -179,7 +186,7 @@ class Level:
 	def vertical_movement_collision(self):
 		player = self.player.sprite
 		player.apply_gravity()
-		collidable_sprites = self.terrain_sprites.sprites() + self.crate_sprites.sprites() + self.fg_palm_sprites.sprites()
+		collidable_sprites = self.terrain_sprites.sprites() + self.crate_sprites.sprites() + self.terrain_sprites2.sprites()
 
 		for sprite in collidable_sprites:
 			if sprite.rect.colliderect(player.collision_rect):
@@ -277,6 +284,8 @@ class Level:
 		# terrain 
 		self.terrain_sprites.update(self.world_shift)
 		self.terrain_sprites.draw(self.display_surface)
+		self.terrain_sprites2.update(self.world_shift)
+		self.terrain_sprites2.draw(self.display_surface)
 		
 		# enemy 
 		self.enemy_sprites.update(self.world_shift)
