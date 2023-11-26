@@ -72,17 +72,38 @@ pygame.init()
 screen = pygame.display.set_mode((screen_width,screen_height))
 clock = pygame.time.Clock()
 game = Game()
+font = pygame.font.SysFont('comicsansms', 30)
+start_ticks = pygame.time.get_ticks()
+timer_active = True
+
 
 
 async def main():
+    
+	current_time = 0
+	button_press_time = 0
+    
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				sys.exit()
-	
+		
+		if timer_active:
+			current_ticks = pygame.time.get_ticks()
+			elapsed_ticks = current_ticks - start_ticks
+			elapsed_seconds = elapsed_ticks // 1000
+			elapsed_minutes = elapsed_seconds // 60
+			elapsed_seconds %= 60
+  
 		screen.fill('grey')
 		game.run()
+		timer_text = f"{elapsed_minutes}:{elapsed_seconds}"
+		timer_surface = font.render(timer_text, True, (255, 255, 255))
+		padding = 10
+		timer_x = max(screen.get_width() - timer_surface.get_width() -padding, 0)
+		screen.blit(timer_surface, (timer_x, 0))
+
 
 		pygame.display.update()
 		clock.tick(60)
