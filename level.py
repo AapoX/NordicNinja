@@ -89,12 +89,23 @@ class Level:
 					y = row_index * tile_size
 
 
-     
+
+					'''if type == 'terrain':
+						terrain_tile_list = ['graphics/terrain/terrain_tiles.png', 'graphics/terrain/terrain_tiles_bricks.png']
+						tile_surfaces = []
+
+						for path in terrain_tile_list:
+							terrain_tile_list = import_cut_graphics(path)
+							tile_surfaces.extend(terrain_tile_list)
+
+						tile_surface = tile_surfaces[int(val)]
+						sprite = StaticTile(tile_size,x,y,tile_surface)'''
+      
 					if type == 'terrain':
-						terrain_tile_list = import_cut_graphics('graphics/terrain/terrain_tiles.png') and import_cut_graphics('graphics/terrain/terrain_tiles.png')
+						terrain_tile_list = import_cut_graphics('graphics/terrain/terrain_tiles.png')
 						tile_surface = terrain_tile_list[int(val)]
 						sprite = StaticTile(tile_size,x,y,tile_surface)
-						
+					
 					if type == 'grass':
 						grass_tile_list = import_cut_graphics('graphics/decoration/grass/grass.png')
 						tile_surface = grass_tile_list[int(val)]
