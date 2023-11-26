@@ -41,9 +41,9 @@ class Player(pygame.sprite.Sprite):
 
 		# audio 
 		self.jump_sound = pygame.mixer.Sound('audio/effects/jump.wav')
-		self.jump_sound.set_volume(0.5)
+		self.jump_sound.set_volume(0.05)
 		self.hit_sound = pygame.mixer.Sound('audio/effects/hit.wav')
-
+		self.hit_sound.set_volume(0.05)
 	def import_character_assets(self):
 		character_path = 'graphics/character/'
 		self.animations = {'idle':[],'run':[],'jump':[],'fall':[]}

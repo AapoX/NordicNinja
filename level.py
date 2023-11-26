@@ -88,8 +88,10 @@ class Level:
 					x = col_index * tile_size
 					y = row_index * tile_size
 
+
+     
 					if type == 'terrain':
-						terrain_tile_list = import_cut_graphics('graphics/terrain/terrain_tiles.png')
+						terrain_tile_list = import_cut_graphics('graphics/terrain/terrain_tiles.png') and import_cut_graphics('graphics/terrain/terrain_tiles.png')
 						tile_surface = terrain_tile_list[int(val)]
 						sprite = StaticTile(tile_size,x,y,tile_surface)
 						
@@ -223,6 +225,7 @@ class Level:
 	def check_coin_collisions(self):
 		collided_coins = pygame.sprite.spritecollide(self.player.sprite,self.coin_sprites,True)
 		if collided_coins:
+			self.coin_sound.set_volume(0.01)
 			self.coin_sound.play()
 			for coin in collided_coins:
 				self.change_coins(coin.value)
@@ -236,6 +239,7 @@ class Level:
 				enemy_top = enemy.rect.top
 				player_bottom = self.player.sprite.rect.bottom
 				if enemy_top < player_bottom < enemy_center and self.player.sprite.direction.y >= 0:
+					self.stomp_sound.set_volume(0.05)
 					self.stomp_sound.play()
 					self.player.sprite.direction.y = -15
 					explosion_sprite = ParticleEffect(enemy.rect.center,'explosion')
