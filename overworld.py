@@ -44,6 +44,8 @@ class Icon(pygame.sprite.Sprite):
 class Overworld:
 	def __init__(self,start_level,max_level,surface,create_level):
 
+
+		# self.background_image = pygame.image.load('graphics/overworld/maptest.jpg').convert()
 		# setup 
 		self.display_surface = surface 
 		self.max_level = max_level
@@ -125,13 +127,17 @@ class Overworld:
 				self.allow_input = True
 
 	def run(self):
+     
+		
 		self.input_timer()
 		self.input()
 		self.update_icon_pos()
 		self.icon.update()
 		self.nodes.update()
+  
 
 		self.sky.draw(self.display_surface)
+		# self.display_surface.blit(self.background_image, (0,0))
 		self.draw_paths()
 		self.nodes.draw(self.display_surface)
 		self.icon.draw(self.display_surface)
