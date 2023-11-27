@@ -44,8 +44,11 @@ class Level:
 		# terrain setup
 		terrain_layout = import_csv_layout(level_data['terrain'])
 		terrain_layout2 = import_csv_layout(level_data['terrain2'])
+		terrain_layout3 = import_csv_layout(level_data['terrain3'])
 		self.terrain_sprites = self.create_tile_group(terrain_layout, 'terrain')
 		self.terrain_sprites2 = self.create_tile_group(terrain_layout2, 'terrain2')
+		self.terrain_sprites3 = self.create_tile_group(terrain_layout3, 'terrain3')
+
 
 		# grass setup 
 		grass_layout = import_csv_layout(level_data['grass'])
@@ -89,19 +92,6 @@ class Level:
 				if val != '-1':
 					x = col_index * tile_size
 					y = row_index * tile_size
-
-
-
-					'''if type == 'terrain':
-						terrain_tile_list = ['graphics/terrain/terrain_tiles.png', 'graphics/terrain/terrain_tiles_bricks.png']
-						tile_surfaces = []
-
-						for path in terrain_tile_list:
-							terrain_tile_list = import_cut_graphics(path)
-							tile_surfaces.extend(terrain_tile_list)
-
-						tile_surface = tile_surfaces[int(val)]
-						sprite = StaticTile(tile_size,x,y,tile_surface)'''
       
 					if type == 'terrain':
 						terrain_tile_list = import_cut_graphics('graphics/terrain/terrain_tiles.png')
@@ -111,6 +101,11 @@ class Level:
 					if type == 'terrain2':
 						terrain_tile_list2 = import_cut_graphics('graphics/terrain/terrain_snow.png')
 						tile_surface = terrain_tile_list2[int(val)]
+						sprite = StaticTile(tile_size,x,y,tile_surface)
+      
+					if type == 'terrain3':
+						terrain_tile_list3 = import_cut_graphics('graphics/terrain/terrain_tiles_bricks.png')
+						tile_surface = terrain_tile_list3[int(val)]
 						sprite = StaticTile(tile_size,x,y,tile_surface)
 					
 					if type == 'grass':
@@ -171,7 +166,7 @@ class Level:
 	def horizontal_movement_collision(self):
 		player = self.player.sprite
 		player.collision_rect.x += player.direction.x * player.speed
-		collidable_sprites = self.terrain_sprites.sprites() + self.crate_sprites.sprites() + self.terrain_sprites2.sprites()
+		collidable_sprites = self.terrain_sprites.sprites() + self.crate_sprites.sprites() + self.terrain_sprites2.sprites() + self.terrain_sprites3.sprites()
 		for sprite in collidable_sprites:
 			if sprite.rect.colliderect(player.collision_rect):
 				if player.direction.x < 0: 
@@ -186,7 +181,7 @@ class Level:
 	def vertical_movement_collision(self):
 		player = self.player.sprite
 		player.apply_gravity()
-		collidable_sprites = self.terrain_sprites.sprites() + self.crate_sprites.sprites() + self.terrain_sprites2.sprites()
+		collidable_sprites = self.terrain_sprites.sprites() + self.crate_sprites.sprites() + self.terrain_sprites2.sprites() + self.terrain_sprites3.sprites()
 
 		for sprite in collidable_sprites:
 			if sprite.rect.colliderect(player.collision_rect):
@@ -267,7 +262,6 @@ class Level:
 					self.player.sprite.get_damage()
 
 	def run(self):
-		# run the entire game / level 
 		
 		# sky 
 		self.sky.draw(self.display_surface)
@@ -281,11 +275,14 @@ class Level:
 		self.dust_sprite.update(self.world_shift)
 		self.dust_sprite.draw(self.display_surface)
 		
-		# terrain 
+  
+		# terrain / UPDATE FOR NEW TERRAIN TYPES ALWAYS!
 		self.terrain_sprites.update(self.world_shift)
 		self.terrain_sprites.draw(self.display_surface)
 		self.terrain_sprites2.update(self.world_shift)
 		self.terrain_sprites2.draw(self.display_surface)
+		self.terrain_sprites3.update(self.world_shift)
+		self.terrain_sprites3.draw(self.display_surface)
 		
 		# enemy 
 		self.enemy_sprites.update(self.world_shift)

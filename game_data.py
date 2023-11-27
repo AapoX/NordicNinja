@@ -1,6 +1,7 @@
 level_0 = {
 		'terrain': 'levels/0/level_0_terrain.csv',
 		'terrain2': 'levels/0/level_0_terrain2.csv',
+		'terrain3': 'levels/0/level_0_terrain3.csv',
 		'coins':'levels/0/level_0_coins.csv',
 		'fg palms':'levels/0/level_0_fg_palms.csv',
 		'bg palms':'levels/0/level_0_bg_palms.csv',
@@ -15,6 +16,7 @@ level_0 = {
 level_1 = {
 		'terrain': 'levels/1/level_1_terrain.csv',
 		'terrain2': 'levels/1/level_1_terrain2.csv',
+		'terrain3': 'levels/1/level_1_terrain3.csv',
 		'coins':'levels/1/level_1_coins.csv',
 		'fg palms':'levels/1/level_1_fg_palms.csv',
 		'bg palms':'levels/1/level_1_bg_palms.csv',
@@ -29,6 +31,7 @@ level_1 = {
 level_2 = {
 		'terrain': 'levels/2/level_2_terrain.csv',
 		'terrain2': 'levels/2/level_2_terrain2.csv',
+		'terrain3': 'levels/2/level_2_terrain3.csv',
 		'coins':'levels/2/level_2_coins.csv',
 		'fg palms':'levels/2/level_2_fg_palms.csv',
 		'bg palms':'levels/2/level_2_bg_palms.csv',
@@ -41,15 +44,17 @@ level_2 = {
 		'node_graphics': 'graphics/overworld/2',
 		'unlock': 3}
 level_3 = {
-		'terrain': 'levels/2/level_2_terrain.csv',
-		'coins':'levels/2/level_2_coins.csv',
-		'fg palms':'levels/2/level_2_fg_palms.csv',
-		'bg palms':'levels/2/level_2_bg_palms.csv',
-		'crates': 'levels/2/level_2_crates.csv',
-		'enemies':'levels/2/level_2_enemies.csv',
-		'constraints':'levels/2/level_2_constraints.csv',
-		'player': 'levels/2/level_2_player.csv',
-		'grass': 'levels/2/level_2_grass.csv',
+		'terrain': 'levels/3/level_3_terrain.csv',
+		'terrain2': 'levels/3/level_3_terrain2.csv',
+		'terrain3': 'levels/3/level_3_terrain3.csv',
+		'coins':'levels/3/level_3_coins.csv',
+		'fg palms':'levels/3/level_3_fg_palms.csv',
+		'bg palms':'levels/3/level_3_bg_palms.csv',
+		'crates': 'levels/3/level_3_crates.csv',
+		'enemies':'levels/3/level_3_enemies.csv',
+		'constraints':'levels/3/level_3_constraints.csv',
+		'player': 'levels/3/level_3_player.csv',
+		'grass': 'levels/3/level_3_grass.csv',
 		'node_pos': (610,350),
 		'node_graphics': 'graphics/overworld/3',
 		'unlock': 4}
