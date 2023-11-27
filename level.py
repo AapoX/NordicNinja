@@ -48,6 +48,9 @@ class Level:
 		self.terrain_sprites = self.create_tile_group(terrain_layout, 'terrain')
 		self.terrain_sprites2 = self.create_tile_group(terrain_layout2, 'terrain2')
 		self.terrain_sprites3 = self.create_tile_group(terrain_layout3, 'terrain3')
+  
+		terrain_layout3bg = import_csv_layout(level_data['terrain3bg'])
+		self.terrain_sprites3bg = self.create_tile_group(terrain_layout3bg, 'terrain3bg')
 
 
 		# grass setup 
@@ -107,6 +110,11 @@ class Level:
 						terrain_tile_list3 = import_cut_graphics('graphics/terrain/terrain_tiles_bricks.png')
 						tile_surface = terrain_tile_list3[int(val)]
 						sprite = StaticTile(tile_size,x,y,tile_surface)
+      
+					if type == 'terrain3bg':
+						terrain_tile_list3bg = import_cut_graphics('graphics/terrain/terrain_tiles_bricks.png')
+						tile_surface = terrain_tile_list3bg[int(val)]
+						sprite = StaticTile(tile_size,x,y,tile_surface)
 					
 					if type == 'grass':
 						grass_tile_list = import_cut_graphics('graphics/decoration/grass/grass.png')
@@ -115,6 +123,7 @@ class Level:
 					
 					if type == 'crates':
 						sprite = Crate(tile_size,x,y)
+      
 
 					if type == 'coins':
 						if val == '0': sprite = Coin(tile_size,x,y,'graphics/coins/gold',5)
@@ -283,6 +292,10 @@ class Level:
 		self.terrain_sprites2.draw(self.display_surface)
 		self.terrain_sprites3.update(self.world_shift)
 		self.terrain_sprites3.draw(self.display_surface)
+  
+		# background
+		self.terrain_sprites3bg.update(self.world_shift)
+		self.terrain_sprites3bg.draw(self.display_surface)
 		
 		# enemy 
 		self.enemy_sprites.update(self.world_shift)
