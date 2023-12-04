@@ -91,7 +91,7 @@ class Game:
 					if event.key == pygame.K_RETURN:
 						self.player_name = text
 						insertNameQuery = "INSERT INTO leaderboard (player_name) VALUES (%s)"
-						sqlCursor.execute(insertNameQuery, (self.player_name,)
+						sqlCursor.execute(insertNameQuery, (self.player_name,))
 						connection.commit()
 					elif event.key == pygame.K_BACKSPACE:
 						text = text[:-1]
