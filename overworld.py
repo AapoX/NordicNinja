@@ -128,14 +128,12 @@ class Overworld:
 				self.allow_input = True
 
 	def run(self):
-     
-		
+
 		self.input_timer()
 		self.input()
 		self.update_icon_pos()
 		self.icon.update()
 		self.nodes.update()
-  
 
 		self.sky.draw(self.display_surface)
 		# self.display_surface.blit(self.background_image, (0,0))

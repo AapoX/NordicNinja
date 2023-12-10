@@ -30,9 +30,10 @@ class Game:
 		self.overworld_bg_music = pygame.mixer.Sound('audio/overworld_music.wav')
 
 		# overworld creation
-		self.overworld = Overworld(0, self.max_level, screen, self.create_level)
-		self.status = 'overworld'
-		self.overworld_bg_music.play(loops=-1)
+		#self.overworld = Overworld(0, self.max_level, screen, self.create_level)
+		#self.status = 'overworld'
+		self.status = 'name'
+		#self.overworld_bg_music.play(loops=-1)
 
 		# user interface
 		self.ui = UI(screen)
@@ -97,8 +98,19 @@ class Game:
 							insert_name_query = "INSERT INTO leaderboard (player_name) VALUES (%s)"
 							sqlCursor.execute(insert_name_query, (text,))
 							connection.commit()
+						else:
+							get_max_level_query = "SELECT max_level FROM leaderboard WHERE player_name = %s"
+							sqlCursor.execute(get_max_level_query, (result[1], ))
+							max_level_value = sqlCursor.fetchone()
+							self.max_level = max_level_value[0]
+							print(f'max level is {self.max_level}')
 
 						self.player_name = text
+
+						self.overworld = Overworld(0, self.max_level, screen, self.create_level)
+						self.status = 'overworld'
+						self.overworld_bg_music.play(loops=-1)
+
 
 					elif event.key == pygame.K_BACKSPACE:
 						text = text[:-1]
@@ -117,6 +129,7 @@ class Game:
 	def run(self):
 		if not self.player_name:
 			self.get_player_name()
+
 		elif self.status == 'overworld':
 			self.overworld.run()
 		else:
@@ -153,6 +166,7 @@ async def main():
 
 		screen.fill('grey')
 		game.run()
+
 		timer_text = f"{elapsed_seconds}s"
 		timer_surface = font.render(timer_text, True, (255, 255, 255))
 		padding = 10

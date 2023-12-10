@@ -259,7 +259,7 @@ class Level:
 			values = (self.new_max_level, self.player_name)
 			kursori.execute(max_level_query, values)
 			connection.commit()
-			print(self.new_max_level)
+			print(f'{self.new_max_level} is the new max level')
 			
 	def check_coin_collisions(self):
 		collided_coins = pygame.sprite.spritecollide(self.player.sprite,self.coin_sprites,True)
