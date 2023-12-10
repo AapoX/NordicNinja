@@ -1,4 +1,4 @@
-import pygame 
+import pygame, mysql.connector
 from support import import_csv_layout, import_cut_graphics
 from settings import tile_size, screen_height, screen_width
 from tiles import Tile, StaticTile, Crate, Coin, Palm
@@ -8,12 +8,24 @@ from player import Player
 from particles import ParticleEffect
 from game_data import levels
 
+connection = mysql.connector.connect(
+         host='127.0.0.1',
+         port= 3306,
+         database='lentokentat',
+         user='root',
+         password='rootpass123',
+         autocommit=True
+         )
+
+kursori = connection.cursor()
+
 class Level:
-	def __init__(self,current_level,surface,create_overworld,change_coins,change_health):
+	def __init__(self,current_level,surface,create_overworld,change_coins,change_health,player_name):
 		# general setup
 		self.display_surface = surface
 		self.world_shift = 0
 		self.current_x = None
+		self.player_name = player_name
 
 		# audio 
 		self.coin_sound = pygame.mixer.Sound('audio/effects/coin.wav')
@@ -243,6 +255,11 @@ class Level:
 	def check_win(self):
 		if pygame.sprite.spritecollide(self.player.sprite,self.goal,False):
 			self.create_overworld(self.current_level,self.new_max_level)
+			max_level_query = "UPDATE leaderboard SET max_level = (%s) WHERE player_name = (%s)"
+			values = (self.new_max_level, self.player_name)
+			kursori.execute(max_level_query, values)
+			connection.commit()
+			print(self.new_max_level)
 			
 	def check_coin_collisions(self):
 		collided_coins = pygame.sprite.spritecollide(self.player.sprite,self.coin_sprites,True)

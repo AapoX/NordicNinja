@@ -19,7 +19,7 @@ class Game:
 	def __init__(self):
 
 		# game attributes
-		self.max_level = 3
+		self.max_level = 0
 		self.max_health = 100
 		self.cur_health = 100
 		self.coins = 0
@@ -38,7 +38,7 @@ class Game:
 		self.ui = UI(screen)
 
 	def create_level(self, current_level):
-		self.level = Level(current_level, screen, self.create_overworld, self.change_coins, self.change_health)
+		self.level = Level(current_level, screen, self.create_overworld, self.change_coins, self.change_health, self.player_name)
 		self.status = 'level'
 		self.overworld_bg_music.stop()
 		self.level_bg_music.play(loops=-1)
@@ -89,10 +89,17 @@ class Game:
 					sys.exit()
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_RETURN:
+						existing_name_query = "SELECT * FROM leaderboard WHERE player_name = %s"
+						sqlCursor.execute(existing_name_query, (text, ))
+						result = sqlCursor.fetchone()
+
+						if not result:
+							insert_name_query = "INSERT INTO leaderboard (player_name) VALUES (%s)"
+							sqlCursor.execute(insert_name_query, (text,))
+							connection.commit()
+
 						self.player_name = text
-						insertNameQuery = "INSERT INTO leaderboard (player_name) VALUES (%s)"
-						sqlCursor.execute(insertNameQuery, (self.player_name,))
-						connection.commit()
+
 					elif event.key == pygame.K_BACKSPACE:
 						text = text[:-1]
 					else:
