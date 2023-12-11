@@ -21,8 +21,8 @@ class Game:
 	def __init__(self):
 
 		# game attributes
-		self.max_level = 0
-		self.max_health = 100
+		self.max_level = 3
+		self.max_health = 80
 		self.cur_health = 100
 		self.coins = 0
 		self.player_name = None
