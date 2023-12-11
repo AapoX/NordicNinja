@@ -4,6 +4,8 @@ from level import Level
 from overworld import Overworld
 from ui import UI
 
+#HERE
+
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
@@ -24,6 +26,8 @@ class Game:
 		self.cur_health = 100
 		self.coins = 0
 		self.player_name = None
+		self.timer_active = False
+		self.elapsed_seconds = 0
 
 		# audio
 		self.level_bg_music = pygame.mixer.Sound('audio/level_music.wav')
@@ -38,11 +42,25 @@ class Game:
 		# user interface
 		self.ui = UI(screen)
 
+	def start_timer(self):
+		self.start_ticks = pygame.time.get_ticks()
+		self.timer_active = True
+
+	def stop_timer(self):
+		self.timer_active = False
+
+	def get_elapsed_time(self):
+		current_ticks = pygame.time.get_ticks()
+		elapsed_ticks = current_ticks - self.start_ticks
+		return elapsed_ticks // 1000
+
 	def create_level(self, current_level):
-		self.level = Level(current_level, screen, self.create_overworld, self.change_coins, self.change_health, self.player_name)
+		self.level_start_time = pygame.time.get_ticks()
+		self.level = Level(current_level, screen, self.create_overworld, self.change_coins, self.change_health, self.player_name, self.level_start_time)
 		self.status = 'level'
 		self.overworld_bg_music.stop()
 		self.level_bg_music.play(loops=-1)
+		self.start_timer()
 
 	def create_overworld(self, current_level, new_max_level):
 		if new_max_level > self.max_level:
@@ -51,6 +69,7 @@ class Game:
 		self.status = 'overworld'
 		self.overworld_bg_music.play(loops=-1)
 		self.level_bg_music.stop()
+		self.stop_timer()
 
 	def change_coins(self, amount):
 		self.coins += amount
@@ -111,7 +130,6 @@ class Game:
 						self.status = 'overworld'
 						self.overworld_bg_music.play(loops=-1)
 
-
 					elif event.key == pygame.K_BACKSPACE:
 						text = text[:-1]
 					else:
@@ -138,6 +156,9 @@ class Game:
 			self.ui.show_coins(self.coins)
 			self.check_game_over()
 
+		if self.status == 'level' and not self.timer_active:
+			self.start_timer()
+
 
 # Pygame setup
 pygame.init()
@@ -145,7 +166,6 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 game = Game()
 font = pygame.font.SysFont('comicsansms', 30)
-start_ticks = pygame.time.get_ticks()
 timer_active = True
 
 
@@ -159,19 +179,16 @@ async def main():
 				pygame.quit()
 				sys.exit()
 
-		if timer_active:
-			current_ticks = pygame.time.get_ticks()
-			elapsed_ticks = current_ticks - start_ticks
-			elapsed_seconds = elapsed_ticks // 1000
-
 		screen.fill('grey')
 		game.run()
 
-		timer_text = f"{elapsed_seconds}s"
-		timer_surface = font.render(timer_text, True, (255, 255, 255))
-		padding = 10
-		timer_x = max(screen.get_width() - timer_surface.get_width() - padding, 0)
-		screen.blit(timer_surface, (timer_x, 0))
+		if game.timer_active:
+			elapsed_seconds = game.get_elapsed_time()
+			timer_text = f"{elapsed_seconds}s"
+			timer_surface = font.render(timer_text, True, (255, 255, 255))
+			padding = 10
+			timer_x = max(screen.get_width() - timer_surface.get_width() - padding, 0)
+			screen.blit(timer_surface, (timer_x, 0))
 
 		pygame.display.update()
 		clock.tick(60)

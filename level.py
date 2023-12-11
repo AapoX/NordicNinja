@@ -20,12 +20,13 @@ connection = mysql.connector.connect(
 kursori = connection.cursor()
 
 class Level:
-	def __init__(self,current_level,surface,create_overworld,change_coins,change_health,player_name):
+	def __init__(self,current_level,surface,create_overworld,change_coins,change_health,player_name, level_start_time):
 		# general setup
 		self.display_surface = surface
 		self.world_shift = 0
 		self.current_x = None
 		self.player_name = player_name
+		self.level_start_time = level_start_time
 
 		# audio 
 		self.coin_sound = pygame.mixer.Sound('audio/effects/coin.wav')
@@ -259,6 +260,16 @@ class Level:
 			values = (self.new_max_level, self.player_name)
 			kursori.execute(max_level_query, values)
 			connection.commit()
+
+			elapsed_time_ms = pygame.time.get_ticks() - self.level_start_time
+			elapsed_time_seconds = elapsed_time_ms // 1000
+
+			print(f'You beat the level in {elapsed_time_seconds} seconds!')
+
+			new_time_query = f"UPDATE leaderboard SET level_{self.current_level + 1} = '{elapsed_time_seconds}' WHERE player_name = '{self.player_name}'"
+			kursori.execute(new_time_query)
+			connection.commit()
+			print(self.current_level)
 			print(f'{self.new_max_level} is the new max level')
 			
 	def check_coin_collisions(self):
@@ -288,20 +299,20 @@ class Level:
 					self.player.sprite.get_damage()
 
 	def run(self):
-		
-		# sky 
+
+		# sky
 		self.sky.draw(self.display_surface)
 		self.clouds.draw(self.display_surface,self.world_shift)
-		
+
 		# background palms
 		self.bg_palm_sprites.update(self.world_shift)
-		self.bg_palm_sprites.draw(self.display_surface) 
+		self.bg_palm_sprites.draw(self.display_surface)
 
-		# dust particles 
+		# dust particles
 		self.dust_sprite.update(self.world_shift)
 		self.dust_sprite.draw(self.display_surface)
-		
-  
+
+
 		# terrain / UPDATE FOR NEW TERRAIN TYPES ALWAYS!
 		self.terrain_sprites.update(self.world_shift)
 		self.terrain_sprites.draw(self.display_surface)
@@ -309,12 +320,12 @@ class Level:
 		self.terrain_sprites2.draw(self.display_surface)
 		self.terrain_sprites3.update(self.world_shift)
 		self.terrain_sprites3.draw(self.display_surface)
-  
+
 		# background
 		self.terrain_sprites3bg.update(self.world_shift)
 		self.terrain_sprites3bg.draw(self.display_surface)
-		
-		# enemy 
+
+		# enemy
 		self.enemy_sprites.update(self.world_shift)
 		self.constraint_sprites.update(self.world_shift)
 		self.enemy_collision_reverse()
@@ -322,7 +333,7 @@ class Level:
 		self.explosion_sprites.update(self.world_shift)
 		self.explosion_sprites.draw(self.display_surface)
 
-		# crate 
+		# crate
 		self.crate_sprites.update(self.world_shift)
 		self.crate_sprites.draw(self.display_surface)
 
@@ -330,7 +341,7 @@ class Level:
 		self.grass_sprites.update(self.world_shift)
 		self.grass_sprites.draw(self.display_surface)
 
-		# coins 
+		# coins
 		self.coin_sprites.update(self.world_shift)
 		self.coin_sprites.draw(self.display_surface)
 
@@ -341,11 +352,11 @@ class Level:
 		# player sprites
 		self.player.update()
 		self.horizontal_movement_collision()
-		
+
 		self.get_player_on_ground()
 		self.vertical_movement_collision()
 		self.create_landing_dust()
-		
+
 		self.scroll_x()
 		self.player.draw(self.display_surface)
 		self.goal.update(self.world_shift)
@@ -357,5 +368,5 @@ class Level:
 		self.check_coin_collisions()
 		self.check_enemy_collisions()
 
-		# water 
+		# water
 		self.water.draw(self.display_surface,self.world_shift)
