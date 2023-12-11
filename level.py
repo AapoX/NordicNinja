@@ -258,11 +258,19 @@ class Level:
 
 			print(f'You beat the level in {elapsed_time_seconds} seconds!')
 
-			new_time_query = f"UPDATE leaderboard SET level_{self.current_level + 1} = '{elapsed_time_seconds}' WHERE player_name = '{self.player_name}'"
-			kursori.execute(new_time_query)
-			connection.commit()
-			print(self.current_level)
-			print(f'{self.new_max_level} is the new max level')
+			old_time_query = f"SELECT level_{self.current_level + 1} FROM leaderboard WHERE player_name = '{self.player_name}'"
+			kursori.execute(old_time_query)
+			tulos = kursori.fetchone()
+
+			print(tulos)
+
+			if tulos[0] > elapsed_time_seconds:
+
+				new_time_query = f"UPDATE leaderboard SET level_{self.current_level + 1} = '{elapsed_time_seconds}' WHERE player_name = '{self.player_name}'"
+				kursori.execute(new_time_query)
+				connection.commit()
+				print(self.current_level)
+				print(f'{self.new_max_level} is the new max level')
 			
 	def check_coin_collisions(self):
 		collided_coins = pygame.sprite.spritecollide(self.player.sprite,self.coin_sprites,True)
